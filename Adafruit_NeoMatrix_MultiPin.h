@@ -1,5 +1,5 @@
 /*!
- * @file Adafruit_NeoMatrix.h
+ * @file Adafruit_Neomatrix_MultiPin.h
  *
  * Arduino library to control single and tiled matrices of WS2811- and
  * WS2812-based RGB LED devices such as the Adafruit NeoPixel Shield or
@@ -30,8 +30,8 @@
  *
  */
 
-#ifndef _ADAFRUIT_NEOMATRIX_H_
-#define _ADAFRUIT_NEOMATRIX_H_
+#ifndef _ADAFRUIT_NEOMATRIX_MULTIPIN_H_
+#define _ADAFRUIT_NEOMATRIX_MULTIPIN_H_
 
 #if ARDUINO >= 100
 #include <Arduino.h>
@@ -79,7 +79,7 @@
 /**
  * @brief Class for using NeoPixel matrices with the GFX graphics library.
  */
-class Adafruit_NeoMatrix : public Adafruit_GFX, public Adafruit_NeoPixel {
+class Adafruit_Neomatrix_MultiPin : public Adafruit_GFX, public Adafruit_NeoPixel {
 
 public:
   /**
@@ -92,7 +92,7 @@ public:
    * @param  ledType     NeoPixel LED type, similar to Adafruit_NeoPixel
    *                     constructor (e.g. NEO_GRB).
    */
-  Adafruit_NeoMatrix(int w, int h, uint8_t pin = 6,
+  Adafruit_Neomatrix_MultiPin(int w, int h, uint8_t pin = 6,
                      uint8_t matrixType = NEO_MATRIX_TOP + NEO_MATRIX_LEFT +
                                           NEO_MATRIX_ROWS,
                      neoPixelType ledType = NEO_GRB + NEO_KHZ800);
@@ -110,14 +110,35 @@ public:
    * @param  ledType     NeoPixel LED type, similar to Adafruit_NeoPixel
    *                     constructor (e.g. NEO_GRB).
    */
-  Adafruit_NeoMatrix(uint8_t matrixW, uint8_t matrixH, uint8_t tX, uint8_t tY,
+  Adafruit_Neomatrix_MultiPin(uint8_t matrixW, uint8_t matrixH, uint8_t tX, uint8_t tY,
                      uint8_t pin = 6,
                      uint8_t matrixType = NEO_MATRIX_TOP + NEO_MATRIX_LEFT +
                                           NEO_MATRIX_ROWS + NEO_TILE_TOP +
                                           NEO_TILE_LEFT + NEO_TILE_ROWS,
                      neoPixelType ledType = NEO_GRB + NEO_KHZ800);
 
-  virtual ~Adafruit_NeoMatrix() {
+  /**
+   * @brief Construct a tiled matrix across pins.
+   * @param  matrixW     Individual sub-matrix (tile) width in pixels.
+   * @param  matrixH     Individual sub-matrix (tile) height in pixels.
+   * @param  tX          Number of tiles on the X (horizontal) axis.
+   * @param  tY          Number of tiles on the Y (vertical) axis.
+   * @param  pins        Arduino pin numbers for NeoPixel data out.
+   * @param  numPins
+   * @param  matrixType  Tiled matrix layout - add together NEO_MATRIX_* and
+   *                     NEO_TILE_* values to declare orientation, rotation,
+   *                     etc.
+   * @param  ledType     NeoPixel LED type, similar to Adafruit_NeoPixel
+   *                     constructor (e.g. NEO_GRB).
+   */
+  Adafruit_Neomatrix_MultiPin(uint8_t matrixW, uint8_t matrixH, uint8_t tX, uint8_t tY,
+                     const uint8_t *pins, uint8_t numPins,
+                     uint8_t matrixType = NEO_MATRIX_TOP + NEO_MATRIX_LEFT +
+                                          NEO_MATRIX_ROWS + NEO_TILE_TOP +
+                                          NEO_TILE_LEFT + NEO_TILE_ROWS,
+                     neoPixelType ledType = NEO_GRB + NEO_KHZ800);
+
+  virtual ~Adafruit_Neomatrix_MultiPin() {
   } // Virtual destructor to allow better memory management
 
   /**
@@ -182,4 +203,4 @@ private:
   boolean passThruFlag = false;
 };
 
-#endif // _ADAFRUIT_NEOMATRIX_H_
+#endif // _ADAFRUIT_NEOMATRIX_MULTIPIN_H_

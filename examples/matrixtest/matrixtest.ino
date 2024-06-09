@@ -1,8 +1,8 @@
-// Adafruit_NeoMatrix example for single NeoPixel Shield.
+// Adafruit_Neomatrix_MultiPin example for single NeoPixel Shield.
 // Scrolls 'Howdy' across the matrix in a portrait (vertical) orientation.
 
 #include <Adafruit_GFX.h>
-#include <Adafruit_NeoMatrix.h>
+#include <Adafruit_Neomatrix_MultiPin.h>
 #include <Adafruit_NeoPixel.h>
 #ifndef PSTR
  #define PSTR // Make Arduino Due happy
@@ -36,7 +36,7 @@
 // Arduino.  When held that way, the first pixel is at the top right, and
 // lines are arranged in columns, progressive order.  The shield uses
 // 800 KHz (v2) pixels that expect GRB color data.
-Adafruit_NeoMatrix matrix = Adafruit_NeoMatrix(5, 8, PIN,
+Adafruit_Neomatrix_MultiPin matrix = Adafruit_Neomatrix_MultiPin(5, 8, PIN,
   NEO_MATRIX_TOP     + NEO_MATRIX_RIGHT +
   NEO_MATRIX_COLUMNS + NEO_MATRIX_PROGRESSIVE,
   NEO_GRB            + NEO_KHZ800);

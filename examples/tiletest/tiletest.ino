@@ -1,9 +1,9 @@
-// Adafruit_NeoMatrix example for tiled NeoPixel matrices.  Scrolls
+// Adafruit_Neomatrix_MultiPin example for tiled NeoPixel matrices.  Scrolls
 // 'Howdy' across three 10x8 NeoPixel grids that were created using
 // NeoPixel 60 LEDs per meter flex strip.
 
 #include <Adafruit_GFX.h>
-#include <Adafruit_NeoMatrix.h>
+#include <Adafruit_Neomatrix_MultiPin.h>
 #include <Adafruit_NeoPixel.h>
 #ifndef PSTR
  #define PSTR // Make Arduino Due happy
@@ -53,7 +53,7 @@
 // There's only one row here, so it doesn't matter if we declare it in row
 // or column order.  The matrices use 800 KHz (v2) pixels that expect GRB
 // color data.
-Adafruit_NeoMatrix matrix = Adafruit_NeoMatrix(10, 8, 3, 1, PIN,
+Adafruit_Neomatrix_MultiPin matrix = Adafruit_Neomatrix_MultiPin(10, 8, 3, 1, PIN,
   NEO_TILE_TOP   + NEO_TILE_LEFT   + NEO_TILE_ROWS   + NEO_TILE_PROGRESSIVE +
   NEO_MATRIX_TOP + NEO_MATRIX_LEFT + NEO_MATRIX_ROWS + NEO_MATRIX_ZIGZAG,
   NEO_GRB + NEO_KHZ800);

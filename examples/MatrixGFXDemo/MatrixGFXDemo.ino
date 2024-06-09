@@ -1,9 +1,9 @@
-// Adafruit_NeoMatrix example for single NeoPixel Shield.
+// Adafruit_Neomatrix_MultiPin example for single NeoPixel Shield.
 // By Marc MERLIN <marc_soft@merlins.org>
 // Contains code (c) Adafruit, license BSD
 
 #include <Adafruit_GFX.h>
-#include <Adafruit_NeoMatrix.h>
+#include <Adafruit_Neomatrix_MultiPin.h>
 #include <Adafruit_NeoPixel.h>
 
 // Choose your prefered pixmap
@@ -78,7 +78,7 @@
 // Define full matrix width and height.
 #define mw 32
 #define mh 32
-Adafruit_NeoMatrix *matrix = new Adafruit_NeoMatrix(8, mh, 
+Adafruit_Neomatrix_MultiPin *matrix = new Adafruit_Neomatrix_MultiPin(8, mh, 
   mw/8, 1, 
   PIN,
   NEO_MATRIX_TOP     + NEO_MATRIX_RIGHT +
@@ -89,7 +89,7 @@ Adafruit_NeoMatrix *matrix = new Adafruit_NeoMatrix(8, mh,
 #elif defined(P16BY16X4)
 #define mw 32
 #define mh 32
-Adafruit_NeoMatrix *matrix = new Adafruit_NeoMatrix(16, mh, 
+Adafruit_Neomatrix_MultiPin *matrix = new Adafruit_Neomatrix_MultiPin(16, mh, 
   mw/16, mh/16, 
   PIN,
   NEO_MATRIX_TOP     + NEO_MATRIX_RIGHT +
@@ -100,7 +100,7 @@ Adafruit_NeoMatrix *matrix = new Adafruit_NeoMatrix(16, mh,
 // Define matrix width and height.
 #define mw 16
 #define mh 16
-Adafruit_NeoMatrix *matrix = new Adafruit_NeoMatrix(mw, mh, 
+Adafruit_Neomatrix_MultiPin *matrix = new Adafruit_Neomatrix_MultiPin(mw, mh, 
   PIN,
   NEO_MATRIX_TOP     + NEO_MATRIX_RIGHT +
     NEO_MATRIX_ROWS + NEO_MATRIX_ZIGZAG,

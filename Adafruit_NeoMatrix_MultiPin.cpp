@@ -1,5 +1,5 @@
 /*!
- * @file Adafruit_NeoMatrix.cpp
+ * @file Adafruit_Neomatrix_MultiPin.cpp
  *
  * @mainpage GFX-compatible layer for NeoPixel matrices.
  *
@@ -48,7 +48,7 @@
  */
 
 #include "gamma.h"
-#include <Adafruit_NeoMatrix.h>
+#include <Adafruit_Neomatrix_MultiPin.h>
 #include <Adafruit_NeoPixel.h>
 #ifdef __AVR__
 #include <avr/pgmspace.h>
@@ -70,20 +70,34 @@
   } ///< Swap contents of two uint16_t variables
 #endif
 
+// Max number of pins allowed
+#define MAX_PINS 10
+
 // Constructor for single matrix:
-Adafruit_NeoMatrix::Adafruit_NeoMatrix(int w, int h, uint8_t pin,
+Adafruit_Neomatrix_MultiPin::Adafruit_Neomatrix_MultiPin(int w, int h, uint8_t pin,
                                        uint8_t matrixType, neoPixelType ledType)
     : Adafruit_GFX(w, h), Adafruit_NeoPixel(w * h, pin, ledType),
       type(matrixType), matrixWidth(w), matrixHeight(h), tilesX(0), tilesY(0),
       remapFn(NULL) {}
 
 // Constructor for tiled matrices:
-Adafruit_NeoMatrix::Adafruit_NeoMatrix(uint8_t mW, uint8_t mH, uint8_t tX,
-                                       uint8_t tY, uint8_t pin,
+Adafruit_Neomatrix_MultiPin::Adafruit_Neomatrix_MultiPin(uint8_t mW, uint8_t mH, uint8_t tX,
+                                       uint8_t tY, const uint8_t *pins, uint8_t numPins,
                                        uint8_t matrixType, neoPixelType ledType)
     : Adafruit_GFX(mW * tX, mH * tY),
-      Adafruit_NeoPixel(mW * mH * tX * tY, pin, ledType), type(matrixType),
-      matrixWidth(mW), matrixHeight(mH), tilesX(tX), tilesY(tY), remapFn(NULL) {
+      matrixWidth(mW), matrixHeight(mH), tilesX(tX), tilesY(tY), remapFn(NULL), numPins(numPins) {
+
+    // Store the pins
+    for (uint8_t i = 0; i < numPins && i < MAX_PINS; i++) {
+        this->pins[i] = pins[i];
+    }
+
+    // Initialize each strip
+    for (uint8_t i = 0; i < numPins && i < MAX_PINS; i++) {
+        strips[i] = new Adafruit_NeoPixel(mW * mH, this->pins[i], ledType);
+        strips[i]->begin();
+        strips[i]->show(); // Initialize all pixels to 'off'
+    }
 }
 
 // Expand 16-bit input color (Adafruit_GFX colorspace) to 24-bit (NeoPixel)
@@ -94,20 +108,20 @@ static uint32_t expandColor(uint16_t color) {
          pgm_read_byte(&gamma5[color & 0x1F]);
 }
 
-uint16_t Adafruit_NeoMatrix::Color(uint8_t r, uint8_t g, uint8_t b) {
+uint16_t Adafruit_Neomatrix_MultiPin::Color(uint8_t r, uint8_t g, uint8_t b) {
   return ((uint16_t)(r & 0xF8) << 8) | ((uint16_t)(g & 0xFC) << 3) | (b >> 3);
 }
 
 // Pass raw color value to set/enable passthrough
-void Adafruit_NeoMatrix::setPassThruColor(uint32_t c) {
+void Adafruit_Neomatrix_MultiPin::setPassThruColor(uint32_t c) {
   passThruColor = c;
   passThruFlag = true;
 }
 
 // Call without a value to reset (disable passthrough)
-void Adafruit_NeoMatrix::setPassThruColor(void) { passThruFlag = false; }
+void Adafruit_Neomatrix_MultiPin::setPassThruColor(void) { passThruFlag = false; }
 
-void Adafruit_NeoMatrix::drawPixel(int16_t x, int16_t y, uint16_t color) {
+void Adafruit_Neomatrix_MultiPin::drawPixel(int16_t x, int16_t y, uint16_t color) {
 
   if ((x < 0) || (y < 0) || (x >= _width) || (y >= _height))
     return;
@@ -217,7 +231,7 @@ void Adafruit_NeoMatrix::drawPixel(int16_t x, int16_t y, uint16_t color) {
                 passThruFlag ? passThruColor : expandColor(color));
 }
 
-void Adafruit_NeoMatrix::fillScreen(uint16_t color) {
+void Adafruit_Neomatrix_MultiPin::fillScreen(uint16_t color) {
   uint16_t i, n;
   uint32_t c;
 
@@ -227,6 +241,6 @@ void Adafruit_NeoMatrix::fillScreen(uint16_t color) {
     setPixelColor(i, c);
 }
 
-void Adafruit_NeoMatrix::setRemapFunction(uint16_t (*fn)(uint16_t, uint16_t)) {
+void Adafruit_Neomatrix_MultiPin::setRemapFunction(uint16_t (*fn)(uint16_t, uint16_t)) {
   remapFn = fn;
 }
